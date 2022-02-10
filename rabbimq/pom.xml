@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hzys</groupId>
-	<artifactId>rabbimq</artifactId>
+	<artifactId>rabbitmq</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rabbimq</name>
 	<description>对rabbitmq进一步封装</description>

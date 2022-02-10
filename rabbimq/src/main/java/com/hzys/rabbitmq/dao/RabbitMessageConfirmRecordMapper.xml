@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzys.rabbitmq.dao.RabbitMessageConfirmRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hzys.rabbitmq.entity.po.RabbitMessageConfirmRecord">
+        <id column="id" property="id" />
+        <result column="exchange" property="exchange" />
+        <result column="route_key" property="routeKey" />
+        <result column="message" property="message" />
+        <result column="message_id" property="messageId" />
+        <result column="retry" property="retry" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, exchange, route_key, message, message_id, retry, created_time, updated_time, created_by, updated_by
+    </sql>
+    <update id="incrRetry">
+        update rabbit_message_confirm_record set retry = retry + 1 where message_id = #{messageId}
+    </update>
+
+</mapper>

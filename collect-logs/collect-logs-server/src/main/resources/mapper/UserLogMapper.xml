@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzys.siqcollectlogsserver.dao.UserLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hzys.siqcollectlogsserver.entity.po.UserLog">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="ip_address" property="ipAddress" />
+        <result column="host_address" property="hostAddress" />
+        <result column="url" property="url" />
+        <result column="request_page" property="requestPage" />
+        <result column="content" property="content" />
+        <result column="request_param" property="requestParam" />
+        <result column="response_param" property="responseParam" />
+        <result column="happened_time" property="happenedTime" />
+        <result column="create_time" property="createTime" />
+        <result column="application_name" property="applicationName"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, user_name, ip_address, host_address, url, application_name, request_page, content, request_param, response_param, happened_time, create_time
+    </sql>
+
+</mapper>

@@ -26,6 +26,7 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 
@@ -80,7 +81,7 @@ public class LogAop {
         }
         // 获取作用在方法上注解  如果方法上没有这个注解或ApiOperation标签的tags没有Log的话就不需要日志操作入库
         ApiOperation apiOperation =  AnnotationUtils.findAnnotation(((MethodSignature) signature).getMethod(), ApiOperation.class);
-        if (apiOperation != null) {
+        if (hasAddLog(apiOperation)) {
             userLogParam.setContent(apiOperation.value());//操作
         }else {
             return joinPoint.proceed(joinPoint.getArgs());
@@ -136,6 +137,9 @@ public class LogAop {
         return proceed;
     }
 
+    private boolean hasAddLog(ApiOperation apiOperation){
+        return apiOperation != null && null != apiOperation.tags() && apiOperation.tags().length > 0 && Arrays.stream(apiOperation.tags()).anyMatch(tag -> tag.toUpperCase().equals("addlog"));
+    }
 
     /**
      * 获取用户真实IP地址，不使用request.getRemoteAddr();的原因是有可能用户使用了代理软件方式避免真实IP地址,

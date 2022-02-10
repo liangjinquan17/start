@@ -23,7 +23,24 @@ public class SendRabbitMessage {
     private IRabbitMessageConfirmRecordService rabbitMessageConfirmRecordService;
     private LinkedBlockingQueue<RabbitMessageConfirmRecord> queue = new LinkedBlockingQueue();
 
+    /**
+     * 数据发送到mq的同时把数据持久化
+     * @param exchange
+     * @param routingKey
+     * @param object
+     */
     public void convertAndSend(String exchange, String routingKey, final Object object)  {
+        convertAndSend(exchange, routingKey, object, true);
+    }
+
+    /**
+     * 数据发送到mq的同时把数据持久化
+     * @param exchange
+     * @param routingKey
+     * @param object
+     * @param durable 是否持久化
+     */
+    public void convertAndSend(String exchange, String routingKey, final Object object, boolean durable)  {
         RabbitMessageConfirmRecord record = createRabbitMessageConfirmRecord(exchange, routingKey, object);
         rabbitMessageConfirmRecordService.save(record);
         rabbitTemplate.convertAndSend(record.getExchange(), record.getRouteKey(), record.getMessage(), new CorrelationData(record.getMessageId()));

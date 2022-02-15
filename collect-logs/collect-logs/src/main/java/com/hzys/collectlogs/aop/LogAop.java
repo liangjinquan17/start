@@ -138,7 +138,7 @@ public class LogAop {
     }
 
     private boolean hasAddLog(ApiOperation apiOperation){
-        return apiOperation != null && null != apiOperation.tags() && apiOperation.tags().length > 0 && Arrays.stream(apiOperation.tags()).anyMatch(tag -> tag.toUpperCase().equals("addlog"));
+        return apiOperation != null && null != apiOperation.tags() && apiOperation.tags().length > 0 && Arrays.stream(apiOperation.tags()).anyMatch(tag -> tag.toLowerCase().equals("addlog"));
     }
 
     /**

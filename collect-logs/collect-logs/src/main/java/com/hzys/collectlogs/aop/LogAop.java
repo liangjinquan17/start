@@ -61,14 +61,22 @@ public class LogAop {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        UserLogDTO userLogParam = new UserLogDTO();
+        Signature signature = joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+
+        UserLogDTO userLogParam = null;
+        ApiOperation apiOperation =  AnnotationUtils.findAnnotation(((MethodSignature) signature).getMethod(), ApiOperation.class);
+        if (hasAddLog(apiOperation)) {
+            userLogParam = new UserLogDTO();
+            userLogParam.setContent(apiOperation.value());//操作
+        }else {
+            return joinPoint.proceed(joinPoint.getArgs());
+        }
+
         if(null != findUserService){
             userLogParam.setUserId(findUserService.getUserId(request));
             userLogParam.setUserName(findUserService.getUserName(request));
         }
-
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
 
         String requestURI = request.getRequestURI();
         //url
@@ -80,12 +88,7 @@ public class LogAop {
             userLogParam.setRequestPage(api.value());//请求页面名
         }
         // 获取作用在方法上注解  如果方法上没有这个注解或ApiOperation标签的tags没有Log的话就不需要日志操作入库
-        ApiOperation apiOperation =  AnnotationUtils.findAnnotation(((MethodSignature) signature).getMethod(), ApiOperation.class);
-        if (hasAddLog(apiOperation)) {
-            userLogParam.setContent(apiOperation.value());//操作
-        }else {
-            return joinPoint.proceed(joinPoint.getArgs());
-        }
+
 
         //处理入参
         Object[] paramValues = joinPoint.getArgs();

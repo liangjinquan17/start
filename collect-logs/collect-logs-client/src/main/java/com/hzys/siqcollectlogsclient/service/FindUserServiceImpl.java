@@ -16,14 +16,14 @@ public class FindUserServiceImpl implements FindUserService {
 
     public String getUserId(HttpServletRequest request) {
         JSONObject userDTO = getSiqUserDTO(request);
-        if(null != userDTO)
+        if(null != userDTO && null != userDTO.getJSONObject("user") && userDTO.getJSONObject("user").containsKey("id"))
             return userDTO.getJSONObject("user").getString("id");
         return null;
     }
 
     public String getUserName(HttpServletRequest request) {
         JSONObject userDTO = getSiqUserDTO(request);
-        if(null != userDTO)
+        if(null != userDTO && null != userDTO.getJSONObject("user") && userDTO.getJSONObject("user").containsKey("username"))
             return userDTO.getJSONObject("user").getString("username");
         return null;
     }

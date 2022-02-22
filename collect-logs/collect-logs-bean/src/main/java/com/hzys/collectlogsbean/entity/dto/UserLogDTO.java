@@ -29,6 +29,8 @@ public class UserLogDTO implements java.io.Serializable{
     private Date happenedTime;
     /** 服务名 **/
     private String applicationName;
+    /** 接口数据类型**/
+    private String type;
 
     public String getUserId() {
         return userId;
@@ -116,5 +118,13 @@ public class UserLogDTO implements java.io.Serializable{
 
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

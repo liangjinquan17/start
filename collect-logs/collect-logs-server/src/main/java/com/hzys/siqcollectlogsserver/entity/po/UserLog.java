@@ -70,6 +70,10 @@ public class UserLog extends Model<UserLog> {
     @TableField("response_param")
     private String responseParam;
 
+    @ApiModelProperty(value = "类型")
+    @TableField("type")
+    private String type;
+
     @ApiModelProperty(value = "操作时间")
     @TableField("happened_time")
     private Date happenedTime;

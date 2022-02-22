@@ -21,6 +21,7 @@ public class ConsumerLogsService {
 
     @RabbitListener(queues = QUEUE_NAME)
     public void consumerCreateSiqUser(String msg){
+        log.info("msg:{}", msg);
         try {
             UserLog userLog = converUserLog(msg);
             userLogService.save(userLog);
@@ -43,6 +44,7 @@ public class ConsumerLogsService {
         userLog.setRequestParam(obj.getString("requestParam"));
         userLog.setResponseParam(obj.getString("responseParam"));
         userLog.setHappenedTime(obj.getDate("happenedTime"));
+        userLog.setType(obj.getString("type"));
         userLog.setCreateTime(new Date());
         return userLog;
     }

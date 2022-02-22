@@ -6,6 +6,8 @@ import com.hzys.collectlogsbean.service.ConsumerLogService;
 import com.hzys.collectlogsbean.service.FindUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Extension;
+import io.swagger.annotations.ExtensionProperty;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -26,9 +28,7 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
+import java.util.*;
 
 @Component
 @Aspect
@@ -69,6 +69,16 @@ public class LogAop {
         if (hasAddLog(apiOperation)) {
             userLogParam = new UserLogDTO();
             userLogParam.setContent(apiOperation.value());//操作
+
+            Optional<Extension> optionalExtension = Arrays.stream(apiOperation.extensions()).filter(extension -> "LogInformationExpansion".equals(extension.name())).findAny();
+            if(optionalExtension.isPresent()){
+                Extension extension = optionalExtension.get();
+                Optional<ExtensionProperty> optionalExtensionProperty = Arrays.stream(extension.properties()).filter(extensionProperty -> "type".equals(extensionProperty.name())).findAny();
+                if(optionalExtensionProperty.isPresent()){
+                    userLogParam.setType(optionalExtensionProperty.get().value());
+                }
+            }
+
         }else {
             return joinPoint.proceed(joinPoint.getArgs());
         }
@@ -141,7 +151,8 @@ public class LogAop {
     }
 
     private boolean hasAddLog(ApiOperation apiOperation){
-        return apiOperation != null && null != apiOperation.tags() && apiOperation.tags().length > 0 && Arrays.stream(apiOperation.tags()).anyMatch(tag -> tag.toLowerCase().equals("addlog"));
+        return apiOperation != null && null != apiOperation.tags() && apiOperation.tags().length > 0
+                && Arrays.stream(apiOperation.tags()).anyMatch(tag -> tag.toLowerCase().equals("addlog"));
     }
 
     /**

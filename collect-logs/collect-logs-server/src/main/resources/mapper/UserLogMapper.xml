@@ -17,11 +17,12 @@
         <result column="happened_time" property="happenedTime" />
         <result column="create_time" property="createTime" />
         <result column="application_name" property="applicationName"/>
+        <result column="type" property="type" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, user_name, ip_address, host_address, url, application_name, request_page, content, request_param, response_param, happened_time, create_time
+        id, user_id, user_name, ip_address, host_address, url, application_name, request_page, content, request_param, response_param, happened_time, create_time, type
     </sql>
 
 </mapper>
